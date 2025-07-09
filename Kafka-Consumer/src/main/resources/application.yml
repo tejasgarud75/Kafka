@@ -1,0 +1,18 @@
+spring:
+  kafka:
+    bootstrap-servers: localhost:9092  # ✅ Move this out of just consumer/producer block!
+
+    consumer:
+      group-id: dlt-consumer-customer-group
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.trusted.packages: com.kafka.dto  # or '*'
+
+    producer:  # ✅ Still needed even in consumer app, for retries + DLT publishing
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+
+
+server:
+  port: 8081
